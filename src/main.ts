@@ -10,10 +10,13 @@ async function bootstrap() {
 			logger: new ConsoleLogger({
 				prefix: "SearchService"
 			}),
-			transport: Transport.TCP,
+			transport: Transport.RMQ,
 			options: {
-				host: process.env.SEARCH_SERVICE_HOST,
-				port: 14000
+				urls: [process.env.RABBITMQ_CONNECTION_URL],
+				queue: "search_queue",
+				queueOptions: {
+					durable: true
+				}
 			}
 		}
 	);
