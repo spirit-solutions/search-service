@@ -8,7 +8,7 @@ const PORT = 14000 as const;
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule, {
 		logger: new ConsoleLogger({
-			prefix: "SnippetService"
+			prefix: "SearchService"
 		})
 	});
 
