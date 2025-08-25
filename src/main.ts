@@ -3,23 +3,14 @@ import { AppModule } from "./app.module";
 import { MicroserviceOptions, Transport } from "@nestjs/microservices";
 import { ConsoleLogger, ValidationPipe } from "@nestjs/common";
 
+const PORT = 14000 as const;
+
 async function bootstrap() {
-	const app = await NestFactory.createMicroservice<MicroserviceOptions>(
-		AppModule,
-		{
-			logger: new ConsoleLogger({
-				prefix: "SearchService"
-			}),
-			transport: Transport.RMQ,
-			options: {
-				urls: [process.env.RABBITMQ_CONNECTION_URL],
-				queue: "search_queue",
-				queueOptions: {
-					durable: true
-				}
-			}
-		}
-	);
+	const app = await NestFactory.create(AppModule, {
+		logger: new ConsoleLogger({
+			prefix: "SnippetService"
+		})
+	});
 
 	app.enableShutdownHooks();
 	app.useGlobalPipes(new ValidationPipe({
@@ -28,7 +19,19 @@ async function bootstrap() {
 		transform: true
 	}));
 
-	await app.listen();
+	app.connectMicroservice<MicroserviceOptions>({
+		transport: Transport.RMQ,
+		options: {
+			urls: [process.env.RABBITMQ_CONNECTION_URL],
+			queue: "search_queue",
+			queueOptions: {
+				durable: true
+			}
+		}
+	}, { inheritAppConfig: true });
+
+	await app.startAllMicroservices();
+	await app.listen(PORT + 1);
 }
 
 bootstrap().catch(console.error);
