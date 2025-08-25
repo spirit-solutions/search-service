@@ -24,6 +24,7 @@ async function bootstrap() {
 		options: {
 			urls: [process.env.RABBITMQ_CONNECTION_URL],
 			queue: "search_queue",
+			noAck: false,
 			queueOptions: {
 				durable: true
 			}

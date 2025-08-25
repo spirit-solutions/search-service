@@ -29,6 +29,7 @@
 		"@nestjs/platform-express": "11.1.6",
 		"@nestjs/terminus": "11.0.0",
 		"@stylistic/eslint-plugin": "5.2.3",
+		"@types/amqplib": "0.10.7",
 		"@types/express": "5.0.3",
 		"@types/node": "24.3.0",
 		"amqp-connection-manager": "4.1.14",
