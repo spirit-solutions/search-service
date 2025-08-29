@@ -8,7 +8,7 @@ export class SnippetService {
 
 	public async addSnippet(data: any) {
 		const client = this.typesenseService.getClient();
-		await client.collections(snippetSchema.name).documents().create(data);
+		await client.collections(snippetSchema.name).documents().upsert(data);
 	}
 
 	public async searchSnippets(query: string) {
