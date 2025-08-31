@@ -14,11 +14,14 @@ export class SnippetService {
 	public async searchSnippets(query: string) {
 		const client = this.typesenseService.getClient();
 
-		const { found } = await client.collections(snippetSchema.name).documents().search({
+		const { hits, found } = await client.collections(snippetSchema.name).documents().search({
 			q: query,
 			query_by: "code,language"
 		});
 
-		return found;
+		return {
+			hits,
+			found
+		};
 	}
 }
